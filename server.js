@@ -5,7 +5,7 @@ const fs = require("fs");
 const uuid = require("./middleware/uuid.js");
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 //MIDDLEWARE
 app.use(express.json());
