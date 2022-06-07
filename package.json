@@ -1,21 +1,17 @@
 {
-  "name": "the-notebook-2",
+  "name": "note-taker",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ruxpin86/The-Notebook-2.git"
-  },
-  "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ruxpin86/The-Notebook-2/issues"
-  },
-  "homepage": "https://github.com/ruxpin86/The-Notebook-2#readme"
+  "dependencies": {
+    "express": "^4.16.4",
+    "nodemon": "^2.0.16"
+  }
 }
