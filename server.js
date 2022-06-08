@@ -12,9 +12,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-// GET route for landing page
-app.get("/", (req, res) => res.sendFile(path.join(__dirname, "index.html")));
-
 // GET route for note-taking page
 app.get("/notes", (req, res) =>
   res.sendFile(path.join(__dirname, "/public/notes.html"))
@@ -44,8 +41,24 @@ app.post("/api/notes", async (req, res) => {
     await readAndAppend({ ...req.body, id: uuid() }, "./db/db.json");
     res.status(200).send("Post /api/notes route SUCCESS!");
   } else {
-    res.status(400).send("Bad user request.");
+    res.status(400).send("Bad request.");
   }
+});
+
+app.delete("/api/notes/:id", (req, res) => {
+  const id = req.params.id;
+  console.log("delete note", id);
+  fs.readFile("./db/db.json", "utf8", (err, data) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json(err);
+    } else {
+      let currentNotes = JSON.parse(data);
+      let newNotes = currentNotes.filter((note) => note.id != id);
+      writeToFile("./db/db.json", newNotes);
+      res.status(200).json(newNotes);
+    }
+  });
 });
 
 const readAndAppend = (content, file) => {
@@ -64,6 +77,9 @@ const writeToFile = (destination, content) =>
   fs.writeFile(destination, JSON.stringify(content, null, 4), (err) =>
     err ? console.error(err) : console.info(`\nData written to ${destination}`)
   );
+
+// GET route for landing page
+app.get("*", (req, res) => res.sendFile(path.join(__dirname, "index.html")));
 
 app.listen(PORT, () =>
   console.log(`App listening at http://localhost:${PORT} 🚀`)
